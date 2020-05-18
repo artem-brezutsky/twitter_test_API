@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Twitter;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -73,6 +74,16 @@ class TwitterUserController extends Controller
                 'error' => 'missing parameter'
             ]);
         }
+
+        /**
+         * Если имя не добавлено
+         */
+        if (Twitter::all()->isEmpty()) {
+            return response()->json([
+                'error' => 'internal error'
+            ]);
+        }
+
         /*
          * Проверка security layer
          * если sha1(id,user) = request.secret
